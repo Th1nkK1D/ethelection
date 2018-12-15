@@ -2,28 +2,28 @@ pragma solidity ^0.4.24;
 
 // Voter contract class
 contract Voter {
-    // enum and struct declaration
-    enum CitizenState { notpermitted, waiting, redeemed, voted }
+    // ---- enum and struct declaration ----
+    enum CitizenState { notpermitted, waiting, redeemed, voted } // Represent citizen status
 
     struct CitizenData {
         CitizenState state;
         bytes32 key;
-    }
+    } // Represent citizen data
 
-    // Public variable, can access with autogen getter
-    uint public totalCitizens;
-    uint public totalCandidates;
-    uint[4] public citizenStateCount;
+    // ---- Public variable, can access with autogen getter ----
+    uint public totalCitizens; // total citizen in the system
+    uint public totalCandidates; // total candidate in the system
+    uint[4] public citizenStateCount; // count citizen for each state
 
-    // Private function for internal use
-    mapping (uint=>CitizenData) private citizenList;
-    mapping (uint=>uint) private candidateList;
+    // ---- Private variable for internal use ----
+    mapping (uint=>CitizenData) private citizenList; // List of citizen id and their citizen data
+    mapping (uint=>uint) private candidateList; // List of candidate id and their vote counter
 
-    // Event declaration  
+    // ---- Event declaration ----
     event Redeem(uint indexed citId, bytes32 key);
     event Vote(uint indexed citId, bytes32 key, uint canId);
 
-    // Constructor initialize contract when deployed
+    // ---- Constructor initialize contract when deployed ----
     constructor(uint[] citizens, uint[] candidates) public {
         // Init counter
         totalCitizens = citizens.length;
@@ -41,18 +41,9 @@ contract Voter {
         }
     }
 
-    // Debugging function
+    // ---- Manipulating function ----
 
-    function getCitizenState(uint citId) public view returns(CitizenState) {
-        return citizenList[citId].state;
-    }
-
-    function getCitizenKey(uint citId) public view returns(bytes32) {
-        return citizenList[citId].key;
-    }
-
-    // Manipulating function
-
+    // Redeem token for specific citizen id and set their secret key for voing
     function redeemToken(uint citId, bytes32 key) public returns(bool success) {
         // Check permission
         if (citizenList[citId].state != CitizenState.waiting) return false;
@@ -70,6 +61,7 @@ contract Voter {
         return true;
     }
 
+    // Using citizen id and their corresponding secret key to vote for specific candidate id
     function vote(uint citId, bytes32 key, uint canId) public returns(bool success) {
         // Check permission and key
         if (citizenList[citId].state != CitizenState.redeemed || citizenList[citId].key != key) return false;
@@ -87,8 +79,9 @@ contract Voter {
         return true;
     }
 
-    // View function
+    // ---- View function ----
 
+    // Get specific candidate vote count
     function getCandidateVote(uint citId) public view returns(uint) {
         return candidateList[citId];
     }

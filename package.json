@@ -23,11 +23,10 @@
   "devDependencies": {
     "@babel/core": "^7.2.0",
     "@babel/register": "^7.0.0",
-    "babel-plugin-transform-async-to-module-method": "^6.24.1",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2"
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "@babel/plugin-transform-async-to-generator": "^7.2.0"
   },
   "dependencies": {
-    "@babel/plugin-transform-async-to-generator": "^7.2.0",
     "@koa/cors": "^2.2.2",
     "koa": "^2.6.2",
     "koa-bodyparser": "^4.2.1",
